@@ -1,0 +1,49 @@
+{
+  "languages": {
+    "TypeScript": {
+      "formatter": {
+        "external": {
+          "command": "./node_modules/.bin/prettier",
+          "arguments": [
+            "--stdin-filepath",
+            "{buffer_path}"
+          ]
+        }
+      },
+      "code_actions_on_format": {
+        "source.fixAll.eslint": true
+      }
+    },
+    "TSX": {
+      "formatter": {
+        "external": {
+          "command": "./node_modules/.bin/prettier",
+          "arguments": [
+            "--stdin-filepath",
+            "{buffer_path}"
+          ]
+        }
+      },
+      "code_actions_on_format": {
+        "source.fixAll.eslint": true
+      }
+    }
+  },
+  "lsp": {
+    "eslint": {
+      "binary": {
+        "path": "./node_modules/.bin/eslint"
+      },
+      "settings": {
+        "codeActionOnSave": {
+          "rules": [
+            "!no-console"
+          ]
+        },
+        "experimental": {
+          "useFlatConfig": true
+        }
+      }
+    }
+  }
+}
