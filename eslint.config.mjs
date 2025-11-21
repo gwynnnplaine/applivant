@@ -1,7 +1,7 @@
-import { defineConfig, globalIgnores } from "eslint/config"
 import nextVitals from "eslint-config-next/core-web-vitals"
 import nextTs from "eslint-config-next/typescript"
 import prettier from "eslint-config-prettier"
+import { defineConfig, globalIgnores } from "eslint/config"
 
 const eslintConfig = defineConfig([
   ...nextVitals,
@@ -9,6 +9,14 @@ const eslintConfig = defineConfig([
   ...prettier,
   {
     rules: {
+      "semi": "off",
+      "@typescript-eslint/semi": ["error"],
+      "padding-line-between-statements": [
+        "error",
+        { blankLine: "always", prev: "import", next: "*" },
+        { blankLine: "any", prev: "import", next: "import" },
+      ],
+      "no-multiple-empty-lines": ["error", { max: 1, maxEOF: 0 }],
       "@typescript-eslint/no-explicit-any": "error",
       "@typescript-eslint/no-unused-vars": [
         "error",
