@@ -3,94 +3,110 @@
 @tailwind utilities;
 
 @layer base {
-  :root {
-    /* Gray 50 #f9fafb */
-    --background: 210 20% 98%;
-    /* Gray 800 #1f2937 */
-    --foreground: 217 24% 17%;
+    :root {
+        /* Gray 50 #f9fafb */
+        --background: 210 20% 98%;
+        /* Gray 800 #1f2937 */
+        --foreground: 217 24% 17%;
 
-    /* White #ffffff */
-    --card: 0 0% 100%;
-    --card-foreground: 217 24% 17%;
+        /* White #ffffff */
+        --card: 0 0% 100%;
+        --card-foreground: 217 24% 17%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 217 24% 17%;
+        --popover: 0 0% 100%;
+        --popover-foreground: 217 24% 17%;
 
-    /* Indigo 600 #4f46e5 */
-    --primary: 243 75% 59%;
-    --primary-foreground: 0 0% 100%;
+        /* Indigo 600 #4f46e5 */
+        --primary: 243 75% 59%;
+        --primary-foreground: 0 0% 100%;
 
-    /* Gray 100 #f3f4f6 */
-    --secondary: 210 20% 96%;
-    --secondary-foreground: 217 24% 17%;
+        /* Gray 100 #f3f4f6 */
+        --secondary: 210 20% 96%;
+        --secondary-foreground: 217 24% 17%;
 
-    /* Gray 100 */
-    --muted: 210 20% 96%;
-    --muted-foreground: 215 16% 47%;
+        /* Gray 100 */
+        --muted: 210 20% 96%;
+        --muted-foreground: 215 16% 47%;
 
-    --accent: 210 20% 96%;
-    --accent-foreground: 217 24% 17%;
+        --accent: 210 20% 96%;
+        --accent-foreground: 217 24% 17%;
 
-    /* Red 500 #ef4444 */
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
+        /* Red 500 #ef4444 */
+        --destructive: 0 84% 60%;
+        --destructive-foreground: 0 0% 100%;
 
-    /* Gray 200 #e5e7eb */
-    --border: 220 13% 91%;
-    --input: 220 13% 91%;
-    --ring: 243 75% 59%;
+        /* Gray 200 #e5e7eb */
+        --border: 220 13% 91%;
+        --input: 220 13% 91%;
+        --ring: 243 75% 59%;
 
-    --radius: 0.375rem;
-  }
+        --radius: 0.375rem;
 
-  .dark {
-    /* Slate 900 #0f172a */
-    --background: 222 47% 11%;
-    /* Slate 100 #f1f5f9 */
-    --foreground: 210 40% 98%;
+        --chart-1: 12 76% 61%;
+        --chart-2: 173 58% 39%;
+        --chart-3: 197 37% 24%;
+        --chart-4: 43 74% 66%;
+        --chart-5: 27 87% 67%;
+    }
 
-    --card: 222 47% 11%;
-    --card-foreground: 210 40% 98%;
+    .dark {
+        /* Slate 900 #0f172a */
+        --background: 222 47% 11%;
+        /* Slate 100 #f1f5f9 */
+        --foreground: 210 40% 98%;
 
-    --popover: 222 47% 11%;
-    --popover-foreground: 210 40% 98%;
+        --card: #1e293b;
+        --card-foreground: 210 40% 98%;
 
-    --primary: 243 75% 59%;
-    --primary-foreground: 0 0% 100%;
+        --popover: 222 47% 11%;
+        --popover-foreground: 210 40% 98%;
 
-    /* Slate 800 */
-    --secondary: 217 33% 17%;
-    --secondary-foreground: 210 40% 98%;
+        --primary: 243 75% 59%;
+        --primary-foreground: 0 0% 100%;
 
-    --muted: 217 33% 17%;
-    --muted-foreground: 215 20% 65%;
+        /* Slate 800 */
+        --secondary: 217 33% 17%;
+        --secondary-foreground: 210 40% 98%;
 
-    --accent: 217 33% 17%;
-    --accent-foreground: 210 40% 98%;
+        --muted: 217 33% 17%;
+        --muted-foreground: 215 20% 65%;
 
-    /* Red 500 */
-    --destructive: 0 62% 30%;
-    --destructive-foreground: 210 40% 98%;
+        --accent: 217 33% 17%;
+        --accent-foreground: 210 40% 98%;
 
-    /* Slate 700 */
-    --border: 217 33% 17%;
-    --input: 217 33% 17%;
-    --ring: 243 75% 59%;
+        /* Red 500 */
+        --destructive: 0 62% 30%;
+        --destructive-foreground: 210 40% 98%;
 
-    --success: 160 84% 39%; /* Green 500 #10b981 */
-    --success-foreground: 0 0% 100%;
-    --warning: 38 92% 50%; /* Amber 500 #f59e0b */
-    --warning-foreground: 0 0% 100%;
-    --info: 217 91% 60%; /* Blue 500 #3b82f6 */
-    --info-foreground: 0 0% 100%;
-  }
+        /* Slate 700 */
+        --border: 217 33% 17%;
+        --input: 217 33% 17%;
+        --ring: 243 75% 59%;
+
+        --success: 160 84% 39%;
+        /* Green 500 #10b981 */
+        --success-foreground: 0 0% 100%;
+        --warning: 38 92% 50%;
+        /* Amber 500 #f59e0b */
+        --warning-foreground: 0 0% 100%;
+        --info: 217 91% 60%;
+        /* Blue 500 #3b82f6 */
+        --info-foreground: 0 0% 100%;
+
+        --chart-1: 220 70% 50%;
+        --chart-2: 160 60% 45%;
+        --chart-3: 30 80% 55%;
+        --chart-4: 280 65% 60%;
+        --chart-5: 340 75% 55%;
+    }
 }
 
 @layer base {
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
+    * {
+        @apply border-border;
+    }
+
+    body {
+        @apply bg-background text-foreground;
+    }
 }

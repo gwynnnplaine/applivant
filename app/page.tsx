@@ -1,11 +1,21 @@
-import { db } from "@/db"
-import { APPLICATION_STATUS } from "@/entities/application-status"
-import { JobApplication } from "@/entities/job-application"
-import { JOB_TYPE } from "@/entities/job-type"
-import { useLiveQuery } from "dexie-react-hooks"
+"use client";
+import { Button } from "@/components/ui/button";
 
 export default function Home() {
+  const applications = [];
+
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center p-24 text-2xl font-bold"></div>
-  )
+    <div className="">
+      {applications.length === 0 && (
+        <div className="flex h-screen flex-col items-center justify-center rounded-lg border bg-card p-6 text-center">
+          <h2 className="text-5xl font-semibold">Your data stays local</h2>
+          <p className="mt-2 text-sm text-muted-foreground">
+            Everything you add is stored in your browser. No servers, no
+            tracking.
+          </p>
+          <Button className="mt-4 w-max">Add Your First Application</Button>
+        </div>
+      )}
+    </div>
+  );
 }

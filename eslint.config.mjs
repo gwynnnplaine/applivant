@@ -11,12 +11,6 @@ const eslintConfig = defineConfig([
     rules: {
       "semi": "off",
       "@typescript-eslint/semi": ["error"],
-      "padding-line-between-statements": [
-        "error",
-        { blankLine: "always", prev: "import", next: "*" },
-        { blankLine: "any", prev: "import", next: "import" },
-      ],
-      "no-multiple-empty-lines": ["error", { max: 1, maxEOF: 0 }],
       "@typescript-eslint/no-explicit-any": "error",
       "@typescript-eslint/no-unused-vars": [
         "error",
