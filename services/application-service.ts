@@ -1,14 +1,14 @@
 import {
   JobApplication,
   JobApplicationInput,
-  JobApplicationSchema,
+  JobApplicationInputSchema,
 } from "@/entities/job-application";
-import { Table } from "dexie";
+import { EntityTable } from "dexie";
 
 export class JobApplicationService {
-  #table: Table<JobApplication, string>;
+  #table: EntityTable<JobApplication, "id">;
 
-  constructor(table: Table<JobApplication, string>) {
+  constructor(table: EntityTable<JobApplication, "id">) {
     this.#table = table;
   }
 
@@ -53,11 +53,15 @@ export class JobApplicationService {
     await this.#table.delete(applicationId);
   }
 
-  #validateJobApplication(application: JobApplicationInput): JobApplication {
-    const validated = JobApplicationSchema.safeParse(application);
+  #validateJobApplication(
+    application: JobApplicationInput,
+  ): JobApplicationInput {
+    const validated = JobApplicationInputSchema.safeParse(application);
 
     if (!validated.success) {
-      throw new Error("Invalid job application data");
+      throw new Error(
+        "Invalid job application data: " + validated.error.message,
+      );
     }
 
     return validated.data;

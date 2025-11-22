@@ -1,16 +1,15 @@
-import nextVitals from "eslint-config-next/core-web-vitals"
-import nextTs from "eslint-config-next/typescript"
-import prettier from "eslint-config-prettier"
-import { defineConfig, globalIgnores } from "eslint/config"
+import nextVitals from "eslint-config-next/core-web-vitals";
+import nextTs from "eslint-config-next/typescript";
+import prettier from "eslint-config-prettier";
+import { defineConfig, globalIgnores } from "eslint/config";
 
 const eslintConfig = defineConfig([
   ...nextVitals,
   ...nextTs,
-  ...prettier,
+  prettier,
   {
     rules: {
-      "semi": "off",
-      "@typescript-eslint/semi": ["error"],
+      semi: ["error", "always"],
       "@typescript-eslint/no-explicit-any": "error",
       "@typescript-eslint/no-unused-vars": [
         "error",
@@ -27,6 +26,6 @@ const eslintConfig = defineConfig([
     "build/**",
     "next-env.d.ts",
   ]),
-])
+]);
 
-export default eslintConfig
+export default eslintConfig;

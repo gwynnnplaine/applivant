@@ -22,8 +22,8 @@
 
 # misc
 .DS_Store
-.zed
-.vscode
+/.zed/
+/.vscode/
 *.pem
 
 # debug
