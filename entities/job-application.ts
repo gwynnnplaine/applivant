@@ -17,11 +17,3 @@ export const JobApplicationSchema = z.object({
 });
 
 export type JobApplication = z.infer<typeof JobApplicationSchema>;
-
-export const JobApplicationInputSchema = JobApplicationSchema.omit({
-  id: true,
-  dateAdded: true,
-  dateModified: true,
-});
-
-export type JobApplicationInput = z.infer<typeof JobApplicationInputSchema>;

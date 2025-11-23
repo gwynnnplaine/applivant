@@ -1,8 +1,8 @@
 import {
-  JobApplication,
   JobApplicationInput,
   JobApplicationInputSchema,
-} from "@/entities/job-application";
+} from "@/app/types/job-application-input.types";
+import { JobApplication } from "@/entities/job-application";
 import { EntityTable } from "dexie";
 
 export class JobApplicationService {

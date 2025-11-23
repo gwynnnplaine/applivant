@@ -1,9 +1,10 @@
 "use client";
 
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  JobApplicationInput,
+  JobApplicationInputSchema,
+} from "@/app/types/job-application-input.types";
 import { Button } from "@/components/ui/button";
-import { JobApplicationInputSchema } from "@/entities/job-application";
 import {
   Form,
   FormControl,
@@ -12,45 +13,47 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import z from "zod";
+import { FormInput } from "@/components/ui/form/form-input";
+import { FormSelect } from "@/components/ui/form/form-select";
+import { Textarea } from "@/components/ui/textarea";
 import { APPLICATION_STATUS } from "@/entities/application-status";
 import { JOB_TYPE } from "@/entities/job-type";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 
-import { FormInput } from "@/components/form/form-input";
-import { FormSelect } from "@/components/form/form-select";
-
-interface AddApplicationFormProps {
-  onSubmit: (data: z.infer<typeof JobApplicationInputSchema>) => void;
-  defaultValues?: Partial<z.infer<typeof JobApplicationInputSchema>>;
+interface ApplicationFormProps {
+  onSubmit: (data: JobApplicationInput) => void;
+  defaultValues?: Partial<JobApplicationInput>;
 }
 
-export function AddApplicationForm({
+export function ApplicationForm({
   onSubmit,
   defaultValues,
-}: AddApplicationFormProps) {
-  const form = useForm<z.infer<typeof JobApplicationInputSchema>>({
+}: ApplicationFormProps) {
+  const form = useForm<JobApplicationInput>({
     resolver: zodResolver(JobApplicationInputSchema),
     defaultValues,
   });
 
   return (
-    <div className="">
+    <div>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            <FormInput
-              control={form.control}
-              name="company"
-              label="Company"
-              placeholder="Acme Corp"
-            />
-            <FormInput
-              control={form.control}
-              name="jobTitle"
-              label="Job Title"
-              placeholder="Frontend Engineer"
-            />
-          </div>
+        <form
+          className="flex flex-col gap-2"
+          onSubmit={form.handleSubmit(onSubmit)}
+        >
+          <FormInput
+            control={form.control}
+            name="company"
+            label="Company"
+            placeholder="Acme Corp"
+          />
+          <FormInput
+            control={form.control}
+            name="jobTitle"
+            label="Job Title"
+            placeholder="Frontend Engineer"
+          />
 
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <FormSelect
@@ -86,14 +89,10 @@ export function AddApplicationForm({
             control={form.control}
             name="notes"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className="space-y-0">
                 <FormLabel>Notes</FormLabel>
                 <FormControl>
-                  <textarea
-                    className="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                    placeholder="Interview notes..."
-                    {...field}
-                  />
+                  <Textarea placeholder="Interview notes..." {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

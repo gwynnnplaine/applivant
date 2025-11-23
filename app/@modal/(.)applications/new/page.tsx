@@ -1,20 +1,36 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useApplicationService } from "@/app/shared";
+import type { JobApplicationInput } from "@/app/types/job-application-input.types";
+import { ApplicationForm } from "@/app/widgets/application-form/application-form";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { AddApplicationForm } from "@/app/widgets/add-application-form/add-application-form";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 export default function NewApplicationModal() {
   const router = useRouter();
+  const service = useApplicationService();
 
   const handleClose = () => {
     router.back();
   };
+
+  async function handleSubmit(application: JobApplicationInput) {
+    try {
+      await service.createJobApplication(application);
+
+      toast.success("Application added successfully");
+
+      handleClose();
+    } catch {
+      toast.error("Failed to add application. Please try again.");
+    }
+  }
 
   return (
     <Dialog open onOpenChange={handleClose}>
@@ -22,11 +38,7 @@ export default function NewApplicationModal() {
         <DialogHeader>
           <DialogTitle>Add New Application</DialogTitle>
         </DialogHeader>
-        <AddApplicationForm
-          onSubmit={() => {
-            handleClose();
-          }}
-        />
+        <ApplicationForm onSubmit={handleSubmit} />
       </DialogContent>
     </Dialog>
   );

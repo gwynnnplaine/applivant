@@ -1,4 +1,3 @@
-import { Control, FieldValues, Path } from "react-hook-form";
 import {
   FormControl,
   FormField,
@@ -13,6 +12,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Control, FieldValues, Path } from "react-hook-form";
 
 interface FormSelectProps<T extends FieldValues> {
   control: Control<T>;
@@ -36,7 +36,7 @@ export function FormSelect<T extends FieldValues>({
       control={control}
       name={name}
       render={({ field }) => (
-        <FormItem>
+        <FormItem className="space-y-0">
           <FormLabel>{label}</FormLabel>
           <Select onValueChange={field.onChange} defaultValue={field.value}>
             <FormControl className={className}>

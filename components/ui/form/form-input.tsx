@@ -1,4 +1,3 @@
-import { Control, FieldValues, Path } from "react-hook-form";
 import {
   FormControl,
   FormField,
@@ -6,7 +5,8 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "../ui/input";
+import { Input } from "@/components/ui/input";
+import { Control, FieldValues, Path } from "react-hook-form";
 
 interface BaseFieldProps<T extends FieldValues> {
   control: Control<T>;
@@ -28,7 +28,7 @@ export function FormInput<T extends FieldValues>({
       control={control}
       name={name}
       render={({ field }) => (
-        <FormItem>
+        <FormItem className="space-y-0">
           <FormLabel>{label}</FormLabel>
           <FormControl className={className}>
             <Input placeholder={placeholder} {...field} />
