@@ -1,10 +1,9 @@
 "use client";
 
 import { DataTable } from "@/components/ui/data-table";
-import { db } from "@/db";
+import { useApplications } from "@/app/shared";
 import { JobApplication } from "@/entities/job-application";
 import { ROUTES } from "@/lib/routes";
-import { useLiveQuery } from "dexie-react-hooks";
 import { useRouter, useSearchParams } from "next/navigation";
 import { columns } from "./applications-table-columns";
 import { EmptyApplicationState } from "./empty-applications-state";
@@ -15,7 +14,7 @@ import { SEARCH_QUERY_PARAM } from "../consts";
 export function ApplicationsTable() {
   const searchParams = useSearchParams();
   const query = searchParams.get(SEARCH_QUERY_PARAM) || "";
-  const applications = useLiveQuery(() => db.applications.toArray(), []);
+  const applications = useApplications();
   const router = useRouter();
 
   if (applications === undefined) {

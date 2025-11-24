@@ -1,29 +1,42 @@
 "use client";
 
-import { useApplicationService } from "../hooks/use-application-service";
 import { JobApplicationInput } from "@/app/types/job-application-input.types";
 import { ApplicationForm } from "@/app/widgets/application-form/application-form";
-import { useRouter } from "next/navigation";
-import toast from "react-hot-toast";
+import { ConfirmDialog } from "@/components/ui/confirm-dialog";
+import { JobApplication } from "@/entities/job-application";
+import { useConfirmDialog } from "@/hooks/use-confirm-dialog";
 import { ROUTES } from "@/lib/routes";
 import {
-  ApplicationValidationError,
-  ApplicationNotFoundError,
   ApplicationDatabaseError,
+  ApplicationNotFoundError,
+  ApplicationValidationError,
 } from "@/services/errors";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
+import { useApplicationService } from "../hooks/use-application-service";
 
 interface ApplicationFormContainerProps {
-  applicationId?: string;
+  application?: JobApplication;
   onSuccess?: () => void;
 }
 
 export function ApplicationFormContainer({
-  applicationId,
+  application,
   onSuccess,
 }: ApplicationFormContainerProps) {
   const router = useRouter();
   const service = useApplicationService();
+  const applicationId = application?.id;
   const isEditing = Boolean(applicationId);
+
+  const deleteDialog = useConfirmDialog({
+    title: "Delete Application?",
+    description:
+      "This will permanently delete this application. This action cannot be undone.",
+    confirmLabel: "Delete",
+    cancelLabel: "Cancel",
+    variant: "destructive",
+  });
 
   const handleSubmit = async (data: JobApplicationInput) => {
     try {
@@ -45,13 +58,13 @@ export function ApplicationFormContainer({
     }
   };
 
-  const handleDelete = async () => {
+  const handleDeleteClick = () => {
     if (!isEditing || !applicationId) return;
+    deleteDialog.openDialog();
+  };
 
-    const confirmed = confirm(
-      "Are you sure you want to delete this application?",
-    );
-    if (!confirmed) return;
+  const handleDeleteConfirm = async () => {
+    if (!applicationId) return;
 
     try {
       await service.deleteJobApplication(applicationId);
@@ -80,9 +93,16 @@ export function ApplicationFormContainer({
   };
 
   return (
-    <ApplicationForm
-      onSubmit={handleSubmit}
-      onDelete={isEditing ? handleDelete : undefined}
-    />
+    <>
+      <ApplicationForm
+        onSubmit={handleSubmit}
+        defaultValues={application}
+        onDelete={isEditing ? handleDeleteClick : undefined}
+      />
+      <ConfirmDialog
+        {...deleteDialog.dialogProps}
+        onConfirm={handleDeleteConfirm}
+      />
+    </>
   );
 }

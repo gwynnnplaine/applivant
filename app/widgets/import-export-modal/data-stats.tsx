@@ -10,7 +10,7 @@ export function DataStats({ totalApplications }: DataStatsProps) {
   return (
     <div className="rounded-lg bg-muted p-4">
       <div className="flex items-start gap-3">
-        <FileJson className="h-6 w-6 text-primary" />
+        <FileJson className="h-3 w-3 text-primary" />
         <div>
           <h3 className="text-sm font-medium text-foreground">
             Data Management

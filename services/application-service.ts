@@ -3,18 +3,18 @@ import {
   JobApplicationInputSchema,
 } from "@/app/types/job-application-input.types";
 import { JobApplication } from "@/entities/job-application";
-import { EntityTable } from "dexie";
+import { IApplicationRepository } from "@/repositories";
 import {
-  ApplicationValidationError,
-  ApplicationNotFoundError,
   ApplicationDatabaseError,
+  ApplicationNotFoundError,
+  ApplicationValidationError,
 } from "./errors";
 
 export class JobApplicationService {
-  #table: EntityTable<JobApplication, "id">;
+  #repository: IApplicationRepository;
 
-  constructor(table: EntityTable<JobApplication, "id">) {
-    this.#table = table;
+  constructor(repository: IApplicationRepository) {
+    this.#repository = repository;
   }
 
   async createJobApplication(
@@ -32,7 +32,7 @@ export class JobApplicationService {
     };
 
     try {
-      await this.#table.add(job);
+      await this.#repository.create(job);
       return job;
     } catch (error) {
       console.error("Failed to create application:", error);
@@ -49,14 +49,14 @@ export class JobApplicationService {
   ): Promise<void> {
     const validatedApplication = this.#validateJobApplication(updates);
 
-    const existing = await this.#table.get(applicationId);
+    const exists = await this.#repository.exists(applicationId);
 
-    if (!existing) {
+    if (!exists) {
       throw new ApplicationNotFoundError(applicationId);
     }
 
     try {
-      await this.#table.update(applicationId, {
+      await this.#repository.update(applicationId, {
         ...validatedApplication,
         dateModified: new Date(),
       });
@@ -70,14 +70,14 @@ export class JobApplicationService {
   }
 
   async deleteJobApplication(applicationId: string): Promise<void> {
-    const existing = await this.#table.get(applicationId);
+    const exists = await this.#repository.exists(applicationId);
 
-    if (!existing) {
+    if (!exists) {
       throw new ApplicationNotFoundError(applicationId);
     }
 
     try {
-      await this.#table.delete(applicationId);
+      await this.#repository.delete(applicationId);
     } catch (error) {
       console.error("Failed to delete application:", error);
       throw new ApplicationDatabaseError(

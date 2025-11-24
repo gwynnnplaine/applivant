@@ -15,7 +15,7 @@ export function ImportExportButton({ onClick }: ImportExportButtonProps) {
       onClick={onClick}
       aria-label="Import or export data"
     >
-      <Upload className="h-4 w-4" />
+      <Upload className="h-2 w-2" />
     </Button>
   );
 }

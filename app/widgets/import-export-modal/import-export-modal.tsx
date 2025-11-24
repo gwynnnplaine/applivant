@@ -8,8 +8,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { useLiveQuery } from "dexie-react-hooks";
-import { db } from "@/db";
+import { useApplications } from "@/app/shared";
 import { useCsvExport } from "@/hooks/use-csv-upload";
 import { ImportCard } from "./import-card";
 import { ExportCard } from "./export-card";
@@ -21,7 +20,7 @@ interface ImportExportModalProps {
 }
 
 export function ImportExportModal({ isOpen, onClose }: ImportExportModalProps) {
-  const applications = useLiveQuery(() => db.applications.toArray(), []);
+  const applications = useApplications();
   const { handleExport } = useCsvExport(applications || []);
 
   const totalApplications = applications?.length ?? 0;

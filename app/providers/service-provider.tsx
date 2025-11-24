@@ -1,8 +1,8 @@
 "use client";
 
-import { createContext, useContext, useMemo } from "react";
-import { db } from "@/db";
+import { DexieApplicationRepository } from "@/repositories";
 import { JobApplicationService } from "@/services/application-service";
+import { createContext, useContext, useMemo } from "react";
 
 interface ServiceContextType {
   applicationService: JobApplicationService;
@@ -11,10 +11,10 @@ interface ServiceContextType {
 const ServiceContext = createContext<ServiceContextType | undefined>(undefined);
 
 export function ServiceProvider({ children }: { children: React.ReactNode }) {
-  const applicationService = useMemo(
-    () => new JobApplicationService(db.applications),
-    [],
-  );
+  const applicationService = useMemo(() => {
+    const repository = new DexieApplicationRepository();
+    return new JobApplicationService(repository);
+  }, []);
 
   return (
     <ServiceContext.Provider value={{ applicationService }}>

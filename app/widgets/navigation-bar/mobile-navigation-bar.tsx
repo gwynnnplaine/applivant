@@ -15,7 +15,7 @@ export function MobileMenu({ links }: MobileNavigationBarProps) {
     <Popover>
       <PopoverTrigger asChild>
         <Button variant="ghost" size="icon" className="h-9 w-9">
-          <Menu className="h-5 w-5" />
+          <Menu className="h-3 w-3" />
           <span className="sr-only">Toggle menu</span>
         </Button>
       </PopoverTrigger>
