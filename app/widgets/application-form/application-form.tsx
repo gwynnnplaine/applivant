@@ -23,17 +23,21 @@ import { useForm } from "react-hook-form";
 
 interface ApplicationFormProps {
   onSubmit: (data: JobApplicationInput) => void;
+  onDelete?: () => void;
   defaultValues?: Partial<JobApplicationInput>;
 }
 
 export function ApplicationForm({
   onSubmit,
+  onDelete,
   defaultValues,
 }: ApplicationFormProps) {
   const form = useForm<JobApplicationInput>({
     resolver: zodResolver(JobApplicationInputSchema),
     defaultValues,
   });
+
+  const deleteButtonVariant = onDelete ? "destructive" : "hidden";
 
   return (
     <div>
@@ -99,8 +103,17 @@ export function ApplicationForm({
             )}
           />
 
-          <div className="flex justify-center pt-4">
-            <Button type="submit">Submit Application</Button>
+          <div className="flex justify-between pt-4">
+            <Button
+              type="button"
+              variant={deleteButtonVariant}
+              onClick={onDelete}
+            >
+              Delete Application
+            </Button>
+            <Button className="ml-auto" type="submit">
+              Submit Application
+            </Button>
           </div>
         </form>
       </Form>

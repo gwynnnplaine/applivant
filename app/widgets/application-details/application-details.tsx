@@ -3,12 +3,43 @@
 import { ApplicationStatusBadge } from "@/app/widgets/application-status-badge/application-status-badge";
 import { JobApplication } from "@/entities/job-application";
 import { Calendar, DollarSign, ExternalLink, MapPin } from "lucide-react";
+import dayjs from "dayjs";
+
+import relativeTime from "dayjs/plugin/relativeTime";
+import { APPLICATION_STATUS } from "@/entities/application-status";
+
+dayjs.extend(relativeTime);
 
 interface ApplicationDetailsProps {
   application: JobApplication;
+  onStatusChange?: (newStatus: APPLICATION_STATUS) => void;
 }
 
-export function ApplicationDetails({ application }: ApplicationDetailsProps) {
+function LastModified({ application }: { application: JobApplication }) {
+  const noEditsBeenMade = application.dateAdded === application.dateModified;
+
+  if (noEditsBeenMade) {
+    return (
+      <span className="text-sm">
+        Added {new Date(application.dateAdded).toLocaleDateString()}
+      </span>
+    );
+  }
+
+  const relativeTime = dayjs(application.dateModified).fromNow();
+
+  return (
+    <span className="text-sm">
+      Added {new Date(application.dateAdded).toLocaleDateString()} (modified{" "}
+      {relativeTime})
+    </span>
+  );
+}
+
+export function ApplicationDetails({
+  application,
+  onStatusChange,
+}: ApplicationDetailsProps) {
   return (
     <div className="space-y-6">
       <div className="flex items-start justify-between">
@@ -23,6 +54,7 @@ export function ApplicationDetails({ application }: ApplicationDetailsProps) {
         <ApplicationStatusBadge
           status={application.status}
           className="px-3 py-1.5 text-sm"
+          onStatusChange={onStatusChange}
         />
       </div>
 
@@ -41,9 +73,7 @@ export function ApplicationDetails({ application }: ApplicationDetailsProps) {
         )}
         <div className="flex items-center gap-2 text-muted-foreground">
           <Calendar className="h-5 w-5 flex-shrink-0" aria-hidden="true" />
-          <span className="text-sm">
-            Added {new Date(application.dateAdded).toLocaleDateString()}
-          </span>
+          <LastModified application={application} />
         </div>
         {application.jobUrl && (
           <div className="flex items-center gap-2">

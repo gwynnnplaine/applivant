@@ -1,3 +1,9 @@
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { APPLICATION_STATUS } from "@/entities/application-status";
 import { cn } from "@/lib/utils";
 
@@ -16,24 +22,41 @@ const STATUS_STYLES: Record<APPLICATION_STATUS, string> = {
 interface ApplicationStatusBadgeProps {
   status: APPLICATION_STATUS;
   className?: string;
+  onStatusChange?: (newStatus: APPLICATION_STATUS) => void;
 }
 
 export function ApplicationStatusBadge({
   status,
   className,
+  onStatusChange,
 }: ApplicationStatusBadgeProps) {
   return (
-    <span
-      className={cn(
-        "inline-flex items-center rounded-full px-2 py-1 text-xs font-medium",
-        "transition-colors duration-150",
-        STATUS_STYLES[status],
-        className,
-      )}
-      role="status"
-      aria-label={`Application status: ${status}`}
-    >
-      {status}
-    </span>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <span
+          className={cn(
+            "inline-flex cursor-pointer items-center rounded-full px-2 py-1 text-xs font-medium hover:opacity-80",
+            "transition-colors duration-150",
+            STATUS_STYLES[status],
+            className,
+          )}
+          role="status"
+          title="Change application status"
+          aria-label={`Application status: ${status}`}
+        >
+          {status}
+        </span>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent>
+        {Object.values(APPLICATION_STATUS).map((s) => (
+          <DropdownMenuItem
+            key={s}
+            onClick={() => onStatusChange && onStatusChange(s)}
+          >
+            {s}
+          </DropdownMenuItem>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }

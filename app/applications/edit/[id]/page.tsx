@@ -3,14 +3,9 @@
 import { useApplicationService } from "@/app/shared";
 import { JobApplicationInput } from "@/app/types/job-application-input.types";
 import { ApplicationForm } from "@/app/widgets/application-form/application-form";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
 import { Spinner } from "@/components/ui/spinner";
 import { db } from "@/db";
+import { ROUTES } from "@/lib/routes";
 import { useLiveQuery } from "dexie-react-hooks";
 import { useParams, useRouter } from "next/navigation";
 import toast from "react-hot-toast";
@@ -27,10 +22,6 @@ export default function EditApplicationModal() {
 
   const isLoading = application === undefined;
 
-  const handleClose = () => {
-    router.back();
-  };
-
   async function handleSubmit(updatedApplication: JobApplicationInput) {
     if (!application) return;
 
@@ -39,28 +30,42 @@ export default function EditApplicationModal() {
 
       toast.success("Application updated successfully");
 
-      handleClose();
+      router.back();
     } catch {
       toast.error("Failed to update application. Please try again.");
     }
   }
 
-  return (
-    <Dialog open onOpenChange={handleClose}>
-      <DialogContent className="min-h-[640px]">
-        <DialogHeader>
-          <DialogTitle>Edit Application</DialogTitle>
-        </DialogHeader>
+  async function handleDelete() {
+    if (!application) return;
 
-        {isLoading ? (
-          <Spinner className="mx-auto size-20" />
-        ) : (
+    try {
+      await service.deleteJobApplication(application.id);
+
+      toast.success("Application deleted successfully");
+
+      router.push(ROUTES.HOME);
+    } catch {
+      toast.error("Failed to delete application. Please try again.");
+    }
+  }
+
+  return (
+    <div className="container max-w-2xl py-8">
+      {isLoading ? (
+        <Spinner className="mx-auto size-20" />
+      ) : (
+        <div>
+          <h1 className="mb-6 text-2xl font-bold">
+            Edit Application - {application?.jobTitle} at {application?.company}
+          </h1>
           <ApplicationForm
             onSubmit={handleSubmit}
+            onDelete={handleDelete}
             defaultValues={application}
           />
-        )}
-      </DialogContent>
-    </Dialog>
+        </div>
+      )}
+    </div>
   );
 }
