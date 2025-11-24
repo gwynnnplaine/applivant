@@ -10,7 +10,7 @@ import { useLiveQuery } from "dexie-react-hooks";
 import { useParams, useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
-export default function ViewApplicationModa() {
+export default function ViewApplicationMode() {
   const router = useRouter();
   const { id } = useParams();
   const service = useApplicationService();

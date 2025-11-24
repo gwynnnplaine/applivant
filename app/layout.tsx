@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Toaster } from "react-hot-toast";
 import { Inter } from "next/font/google";
 import { ThemeProvider } from "./providers/theme-provider";
+import { ServiceProvider } from "./providers/service-provider";
 import { NavigationBar } from "./widgets";
 
 import "./globals.css";
@@ -48,13 +49,9 @@ export const viewport: Viewport = {
 
 interface RootLayoutProps {
   children: React.ReactNode;
-  modal: React.ReactNode;
 }
 
-export default function RootLayout({
-  children,
-  modal,
-}: Readonly<RootLayoutProps>) {
+export default function RootLayout({ children }: Readonly<RootLayoutProps>) {
   return (
     <html lang="en" className={inter.variable} suppressHydrationWarning>
       <body className="min-h-screen bg-background font-sans text-foreground antialiased">
@@ -64,10 +61,11 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <NavigationBar />
-          {modal}
-          {children}
-          <Toaster />
+          <ServiceProvider>
+            <NavigationBar />
+            {children}
+            <Toaster />
+          </ServiceProvider>
         </ThemeProvider>
       </body>
     </html>

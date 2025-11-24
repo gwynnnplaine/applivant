@@ -1,7 +1,6 @@
 "use client";
 
 import { DataTable } from "@/components/ui/data-table";
-import { Spinner } from "@/components/ui/spinner";
 import { db } from "@/db";
 import { JobApplication } from "@/entities/job-application";
 import { ROUTES } from "@/lib/routes";
@@ -9,45 +8,37 @@ import { useLiveQuery } from "dexie-react-hooks";
 import { useRouter, useSearchParams } from "next/navigation";
 import { columns } from "./applications-table-columns";
 import { EmptyApplicationState } from "./empty-applications-state";
+import { TableLoadingState } from "./table-loading-state";
+import { filterApplications } from "./filter-utils";
+import { SEARCH_QUERY_PARAM } from "../consts";
 
 export function ApplicationsTable() {
   const searchParams = useSearchParams();
-  const query = searchParams.get("search")?.toLowerCase() || "";
-
+  const query = searchParams.get(SEARCH_QUERY_PARAM) || "";
   const applications = useLiveQuery(() => db.applications.toArray(), []);
   const router = useRouter();
 
   if (applications === undefined) {
-    return (
-      <div className="flex h-full flex-col items-center justify-center gap-4">
-        <h1 className="text-3xl font-bold">Loading applications...</h1>
-        <Spinner className="size-20" />
-      </div>
-    );
+    return <TableLoadingState />;
   }
 
   if (applications.length === 0) {
     return <EmptyApplicationState />;
   }
 
-  function handleRowClick(application: JobApplication) {
+  const handleRowClick = (application: JobApplication) => {
     router.push(ROUTES.VIEW_APPLICATION(application.id));
-  }
+  };
 
-  const filtered = applications.filter(
-    (app) =>
-      app.jobTitle.toLowerCase().includes(query) ||
-      app.company.toLowerCase().includes(query) ||
-      app.status.toLowerCase().includes(query),
-  );
+  const filteredApplications = filterApplications(applications, query);
 
   return (
     <DataTable
       columns={columns}
-      data={filtered}
+      data={filteredApplications}
       onRowClick={handleRowClick}
       enablePagination
-      emptyStateText="No applications found."
+      emptyStateText="No applications found matching your search."
     />
   );
 }

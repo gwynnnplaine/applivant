@@ -4,6 +4,11 @@ import {
 } from "@/app/types/job-application-input.types";
 import { JobApplication } from "@/entities/job-application";
 import { EntityTable } from "dexie";
+import {
+  ApplicationValidationError,
+  ApplicationNotFoundError,
+  ApplicationDatabaseError,
+} from "./errors";
 
 export class JobApplicationService {
   #table: EntityTable<JobApplication, "id">;
@@ -26,9 +31,16 @@ export class JobApplicationService {
       dateModified: currentDate,
     };
 
-    await this.#table.add(job);
-
-    return job;
+    try {
+      await this.#table.add(job);
+      return job;
+    } catch (error) {
+      console.error("Failed to create application:", error);
+      throw new ApplicationDatabaseError(
+        "Failed to save application to database",
+        "create",
+      );
+    }
   }
 
   async updateJobApplication(
@@ -40,17 +52,39 @@ export class JobApplicationService {
     const existing = await this.#table.get(applicationId);
 
     if (!existing) {
-      throw new Error("Job application not found");
+      throw new ApplicationNotFoundError(applicationId);
     }
 
-    await this.#table.update(applicationId, {
-      ...validatedApplication,
-      dateModified: new Date(),
-    });
+    try {
+      await this.#table.update(applicationId, {
+        ...validatedApplication,
+        dateModified: new Date(),
+      });
+    } catch (error) {
+      console.error("Failed to update application:", error);
+      throw new ApplicationDatabaseError(
+        "Failed to update application in database",
+        "update",
+      );
+    }
   }
 
   async deleteJobApplication(applicationId: string): Promise<void> {
-    await this.#table.delete(applicationId);
+    const existing = await this.#table.get(applicationId);
+
+    if (!existing) {
+      throw new ApplicationNotFoundError(applicationId);
+    }
+
+    try {
+      await this.#table.delete(applicationId);
+    } catch (error) {
+      console.error("Failed to delete application:", error);
+      throw new ApplicationDatabaseError(
+        "Failed to delete application from database",
+        "delete",
+      );
+    }
   }
 
   #validateJobApplication(
@@ -59,8 +93,9 @@ export class JobApplicationService {
     const validated = JobApplicationInputSchema.safeParse(application);
 
     if (!validated.success) {
-      throw new Error(
-        "Invalid job application data: " + validated.error.message,
+      throw new ApplicationValidationError(
+        validated.error.message,
+        String(validated.error.issues[0]?.path[0] || ""),
       );
     }
 

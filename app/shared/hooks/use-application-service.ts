@@ -1,8 +1,5 @@
-import { db } from "@/db";
-import { JobApplicationService } from "@/services/application-service";
-import { useMemo } from "react";
+import { useServices } from "@/app/providers/service-provider";
 
 export function useApplicationService() {
-  const service = useMemo(() => new JobApplicationService(db.applications), []);
-  return service;
+  return useServices().applicationService;
 }

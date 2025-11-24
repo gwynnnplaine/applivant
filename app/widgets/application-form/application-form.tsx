@@ -4,22 +4,15 @@ import {
   JobApplicationInput,
   JobApplicationInputSchema,
 } from "@/app/types/job-application-input.types";
-import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form } from "@/components/ui/form";
 import { FormInput } from "@/components/ui/form/form-input";
 import { FormSelect } from "@/components/ui/form/form-select";
-import { Textarea } from "@/components/ui/textarea";
 import { APPLICATION_STATUS } from "@/entities/application-status";
 import { JOB_TYPE } from "@/entities/job-type";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { FormActions } from "./form-actions";
+import { FormTextarea } from "./form-textarea";
 
 interface ApplicationFormProps {
   onSubmit: (data: JobApplicationInput) => void;
@@ -37,86 +30,64 @@ export function ApplicationForm({
     defaultValues,
   });
 
-  const deleteButtonVariant = onDelete ? "destructive" : "hidden";
-
   return (
-    <div>
-      <Form {...form}>
-        <form
-          className="flex flex-col gap-2"
-          onSubmit={form.handleSubmit(onSubmit)}
-        >
-          <FormInput
-            control={form.control}
-            name="company"
-            label="Company"
-            placeholder="Acme Corp"
-          />
-          <FormInput
-            control={form.control}
-            name="jobTitle"
-            label="Job Title"
-            placeholder="Frontend Engineer"
-          />
+    <Form {...form}>
+      <form
+        className="flex flex-col gap-2"
+        onSubmit={form.handleSubmit(onSubmit)}
+      >
+        <FormInput
+          control={form.control}
+          name="company"
+          label="Company"
+          placeholder="Acme Corp"
+        />
+        <FormInput
+          control={form.control}
+          name="jobTitle"
+          label="Job Title"
+          placeholder="Frontend Engineer"
+        />
 
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            <FormSelect
-              control={form.control}
-              name="status"
-              label="Status"
-              placeholder="Select Status"
-              options={Object.values(APPLICATION_STATUS)}
-            />
-            <FormSelect
-              control={form.control}
-              name="jobType"
-              label="Job Type"
-              placeholder="Select Type"
-              options={Object.values(JOB_TYPE)}
-            />
-          </div>
-          <FormInput
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <FormSelect
             control={form.control}
-            name="salary"
-            label="Salary"
-            placeholder="$120,000"
+            name="status"
+            label="Status"
+            placeholder="Select Status"
+            options={Object.values(APPLICATION_STATUS)}
           />
-
-          <FormInput
+          <FormSelect
             control={form.control}
-            name="jobUrl"
-            label="Job URL"
-            placeholder="https://..."
+            name="jobType"
+            label="Job Type"
+            placeholder="Select Type"
+            options={Object.values(JOB_TYPE)}
           />
+        </div>
 
-          <FormField
-            control={form.control}
-            name="notes"
-            render={({ field }) => (
-              <FormItem className="space-y-0">
-                <FormLabel>Notes</FormLabel>
-                <FormControl>
-                  <Textarea placeholder="Interview notes..." {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+        <FormInput
+          control={form.control}
+          name="salary"
+          label="Salary"
+          placeholder="$120,000"
+        />
+        <FormInput
+          control={form.control}
+          name="jobUrl"
+          label="Job URL"
+          placeholder="https://..."
+        />
 
-          <div className="flex justify-between pt-4">
-            <Button
-              type="button"
-              variant={deleteButtonVariant}
-              onClick={onDelete}
-            >
-              Delete Application
-            </Button>
-            <Button className="ml-auto" type="submit">
-              Submit Application
-            </Button>
-          </div>
-        </form>
-      </Form>
-    </div>
+        <FormTextarea
+          control={form.control}
+          name="notes"
+          label="Notes"
+          placeholder="Interview notes..."
+        />
+
+        <FormActions onDelete={onDelete} />
+      </form>
+    </Form>
   );
 }
