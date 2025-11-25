@@ -1,15 +1,15 @@
 "use client";
 
-import { DataTable } from "@/components/ui/data-table";
 import { useApplications } from "@/app/shared";
+import { DataTable } from "@/components/ui/data-table";
 import { JobApplication } from "@/entities/job-application";
 import { ROUTES } from "@/lib/routes";
 import { useRouter, useSearchParams } from "next/navigation";
+import { SEARCH_QUERY_PARAM } from "../consts";
 import { columns } from "./applications-table-columns";
 import { EmptyApplicationState } from "./empty-applications-state";
-import { TableLoadingState } from "./table-loading-state";
 import { filterApplications } from "./filter-utils";
-import { SEARCH_QUERY_PARAM } from "../consts";
+import { TableLoadingState } from "./table-loading-state";
 
 export function ApplicationsTable() {
   const searchParams = useSearchParams();

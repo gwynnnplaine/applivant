@@ -4,69 +4,62 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   SortingState,
-  TableOptions,
+  Table,
+  useReactTable,
   VisibilityState,
 } from "@tanstack/react-table";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 
 interface FeatureOptions {
   enablePagination?: boolean;
-  enableSorting?: boolean;
   initialVisibility?: VisibilityState;
   emptyStateText?: string;
 }
 
-export interface CustomTableProps<TData, TValue> extends FeatureOptions {
+export interface DataTableProps<TData, TValue> extends FeatureOptions {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   onRowClick?: (data: TData) => void;
 }
 
-export function useTableConfig<TData, TValue>(
-  props: CustomTableProps<TData, TValue>,
-): TableOptions<TData> {
+export interface UseDataTableReturn<TData> {
+  table: Table<TData>;
+  enablePagination: boolean;
+  onRowClick?: (data: TData) => void;
+  emptyStateText?: string;
+  columnsCount: number;
+}
+
+export function useDataTable<TData, TValue>(
+  props: DataTableProps<TData, TValue>,
+): UseDataTableReturn<TData> {
   const {
     columns,
     data,
     enablePagination = false,
-    enableSorting = false,
-    initialVisibility = {},
+    onRowClick,
+    emptyStateText,
   } = props;
 
   const [sorting, setSorting] = useState<SortingState>([]);
 
-  const options = useMemo(() => {
-    const tableOptions: TableOptions<TData> = {
-      data,
-      columns,
-      getCoreRowModel: getCoreRowModel(),
-      initialState: {
-        columnVisibility: initialVisibility,
-      },
-      state: {
-        ...(enableSorting ? { sorting } : {}),
-      },
-      onSortingChange: setSorting,
-    };
-
-    if (enablePagination) {
-      tableOptions.getPaginationRowModel = getPaginationRowModel();
-    }
-
-    if (enableSorting) {
-      tableOptions.getSortedRowModel = getSortedRowModel();
-    }
-
-    return tableOptions;
-  }, [
-    columns,
+  const table = useReactTable({
     data,
-    enablePagination,
-    enableSorting,
-    initialVisibility,
-    sorting,
-    setSorting,
-  ]);
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getPaginationRowModel: enablePagination
+      ? getPaginationRowModel()
+      : undefined,
+    state: { sorting },
+    onSortingChange: setSorting,
+  });
 
-  return options;
+  return {
+    table,
+    enablePagination,
+    onRowClick,
+    emptyStateText,
+    columnsCount: columns.length,
+  };
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { flexRender, useReactTable } from "@tanstack/react-table";
+import { flexRender } from "@tanstack/react-table";
 
 import {
   Table,
@@ -11,16 +11,13 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { DataEmptyState } from "./data-empty-state";
-import { CustomTableProps, useTableConfig } from "./data-table-config";
+import { DataTableProps, useDataTable } from "./data-table-config";
+import { DataTableHeader } from "./data-table-header";
 import { DataTablePagination } from "./data-table-pagination";
 
-export function DataTable<TData, TValue>(
-  props: CustomTableProps<TData, TValue>,
-) {
-  // eslint-disable-next-line react-hooks/incompatible-library
-  const table = useReactTable(useTableConfig(props));
-
-  const { enablePagination, columns, onRowClick, emptyStateText } = props;
+export function DataTable<TData, TValue>(props: DataTableProps<TData, TValue>) {
+  const { table, enablePagination, onRowClick, emptyStateText, columnsCount } =
+    useDataTable(props);
 
   return (
     <div>
@@ -29,18 +26,11 @@ export function DataTable<TData, TValue>(
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext(),
-                          )}
-                    </TableHead>
-                  );
-                })}
+                {headerGroup.headers.map((header) => (
+                  <TableHead key={header.id}>
+                    <DataTableHeader header={header} />
+                  </TableHead>
+                ))}
               </TableRow>
             ))}
           </TableHeader>
@@ -53,26 +43,22 @@ export function DataTable<TData, TValue>(
                   onClick={() => onRowClick?.(row.original)}
                   className={onRowClick ? "cursor-pointer hover:bg-muted" : ""}
                 >
-                  {row.getVisibleCells().map((cell) => {
-                    const className = cell.column.columnDef.meta?.className;
-
-                    return (
-                      <TableCell key={cell.id} className={className}>
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext(),
-                        )}
-                      </TableCell>
-                    );
-                  })}
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell
+                      key={cell.id}
+                      className={cell.column.columnDef.meta?.className}
+                    >
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext(),
+                      )}
+                    </TableCell>
+                  ))}
                 </TableRow>
               ))
             ) : (
               <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
+                <TableCell colSpan={columnsCount} className="h-24 text-center">
                   <DataEmptyState message={emptyStateText} />
                 </TableCell>
               </TableRow>

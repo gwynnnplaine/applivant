@@ -7,6 +7,7 @@ export const columns: ColumnDef<JobApplication>[] = [
   {
     accessorKey: "company",
     header: "Company",
+    enableSorting: true,
     meta: {
       className: "text-left",
     },
