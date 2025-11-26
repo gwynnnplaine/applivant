@@ -49,7 +49,7 @@ function SortableHeaderButton<TData, TValue>({
       variant="ghost"
       type="button"
       className={cn(
-        "flex items-center gap-1 font-medium transition-colors hover:text-foreground",
+        "flex items-center gap-0.5 pl-2 font-medium transition-colors hover:text-foreground",
         isSorted && "text-foreground",
       )}
       onClick={header.column.getToggleSortingHandler()}

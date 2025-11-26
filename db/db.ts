@@ -1,4 +1,4 @@
-import type { JobApplication } from "@/entities/job-application";
+import type { JobApplication } from "@/entities/application";
 import Dexie, { EntityTable } from "dexie";
 import { DATABASE_NAME, DATABASE_VERSION } from "./consts";
 

@@ -10,6 +10,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { cn } from "@/lib/utils";
 import { DataEmptyState } from "./data-empty-state";
 import { DataTableProps, useDataTable } from "./data-table-config";
 import { DataTableHeader } from "./data-table-header";
@@ -27,7 +28,13 @@ export function DataTable<TData, TValue>(props: DataTableProps<TData, TValue>) {
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
-                  <TableHead key={header.id}>
+                  <TableHead
+                    className={cn(
+                      header.column.columnDef.enableSorting &&
+                        "cursor-pointer p-0",
+                    )}
+                    key={header.id}
+                  >
                     <DataTableHeader header={header} />
                   </TableHead>
                 ))}

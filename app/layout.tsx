@@ -1,9 +1,9 @@
+import { NavigationBar } from "@/features/navigation";
 import type { Metadata, Viewport } from "next";
-import { Toaster } from "react-hot-toast";
 import { Inter } from "next/font/google";
-import { ThemeProvider } from "./providers/theme-provider";
+import { Toaster } from "react-hot-toast";
 import { ServiceProvider } from "./providers/service-provider";
-import { NavigationBar } from "./widgets";
+import { ThemeProvider } from "./providers/theme-provider";
 
 import "./globals.css";
 

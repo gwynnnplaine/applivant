@@ -1,11 +1,10 @@
 "use client";
 
-import { DexieApplicationRepository } from "@/repositories";
-import { JobApplicationService } from "@/services/application-service";
+import { ApplicationService, DexieApplicationRepository } from "@/shared/api";
 import { createContext, useContext, useMemo } from "react";
 
 interface ServiceContextType {
-  applicationService: JobApplicationService;
+  applicationService: ApplicationService;
 }
 
 const ServiceContext = createContext<ServiceContextType | undefined>(undefined);
@@ -13,7 +12,7 @@ const ServiceContext = createContext<ServiceContextType | undefined>(undefined);
 export function ServiceProvider({ children }: { children: React.ReactNode }) {
   const applicationService = useMemo(() => {
     const repository = new DexieApplicationRepository();
-    return new JobApplicationService(repository);
+    return new ApplicationService(repository);
   }, []);
 
   return (
@@ -29,4 +28,8 @@ export function useServices() {
     throw new Error("useServices must be used within ServiceProvider");
   }
   return context;
+}
+
+export function useApplicationService() {
+  return useServices().applicationService;
 }

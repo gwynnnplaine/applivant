@@ -1,12 +1,16 @@
 "use client";
+
 import { ErrorBoundary } from "@/components/error-boundary";
-import { ApplicationsTable } from "./widgets";
+import { ApplicationList } from "@/features/application-list";
+import { useApplicationService } from "./providers/service-provider";
 
 export default function Home() {
+  const service = useApplicationService();
+
   return (
     <div className="flex h-screen flex-col rounded-lg border bg-card px-2 py-4 text-center">
       <ErrorBoundary fallback={<FallbackComponent />}>
-        <ApplicationsTable />
+        <ApplicationList service={service} />
       </ErrorBoundary>
     </div>
   );
