@@ -8,7 +8,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { useApplications, useCsvExport } from "@/shared/hooks";
+import { useApplications, useExport } from "@/shared/hooks";
 import { DataStats } from "./data-stats";
 import { ExportCard } from "./export-card";
 import { ImportCard } from "./import-card";
@@ -20,7 +20,7 @@ interface ImportExportModalProps {
 
 export function ImportExportModal({ isOpen, onClose }: ImportExportModalProps) {
   const applications = useApplications();
-  const { handleExport } = useCsvExport(applications ?? []);
+  const { handleExport } = useExport(applications ?? [], "csv");
 
   const totalApplications = applications?.length ?? 0;
 
