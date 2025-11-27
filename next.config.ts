@@ -1,8 +1,16 @@
 import type { NextConfig } from "next";
+import { securityHeaders } from "./config/security-headers";
 
 const nextConfig: NextConfig = {
-  /* config options here */
   reactCompiler: false,
+  async headers() {
+    return [
+      {
+        source: "/(.*)",
+        headers: securityHeaders,
+      },
+    ];
+  },
 };
 
 export default nextConfig;
