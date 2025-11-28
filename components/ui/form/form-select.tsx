@@ -21,6 +21,7 @@ interface FormSelectProps<T extends FieldValues> {
   placeholder?: string;
   options: string[];
   className?: string;
+  required?: boolean;
 }
 
 export function FormSelect<T extends FieldValues>({
@@ -30,6 +31,7 @@ export function FormSelect<T extends FieldValues>({
   options,
   placeholder,
   className,
+  required,
 }: FormSelectProps<T>) {
   return (
     <FormField
@@ -37,7 +39,10 @@ export function FormSelect<T extends FieldValues>({
       name={name}
       render={({ field }) => (
         <FormItem className="space-y-0">
-          <FormLabel>{label}</FormLabel>
+          <FormLabel>
+            {label}
+            {required && <span className="ml-1 text-destructive">*</span>}
+          </FormLabel>
           <Select onValueChange={field.onChange} defaultValue={field.value}>
             <FormControl className={className}>
               <SelectTrigger>

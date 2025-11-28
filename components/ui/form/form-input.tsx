@@ -14,6 +14,7 @@ interface BaseFieldProps<T extends FieldValues> {
   label: string;
   placeholder?: string;
   className?: string;
+  required?: boolean;
 }
 
 export function FormInput<T extends FieldValues>({
@@ -22,14 +23,18 @@ export function FormInput<T extends FieldValues>({
   label,
   placeholder,
   className,
+  required,
 }: BaseFieldProps<T>) {
   return (
     <FormField
       control={control}
       name={name}
       render={({ field }) => (
-        <FormItem className="space-y-0">
-          <FormLabel>{label}</FormLabel>
+        <FormItem className="space-y-1">
+          <FormLabel>
+            {label}
+            {required && <span className="ml-1 text-destructive">*</span>}
+          </FormLabel>
           <FormControl className={className}>
             <Input placeholder={placeholder} {...field} />
           </FormControl>

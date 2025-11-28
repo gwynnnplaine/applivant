@@ -3,12 +3,12 @@ import { ApplicationCard } from "./application-card";
 
 interface ApplicationGridProps {
   applications: JobApplication[];
-  onApplicationClick?: (application: JobApplication) => void;
+  onStatusClick?: (application: JobApplication) => void;
 }
 
 export function ApplicationGrid({
   applications,
-  onApplicationClick,
+  onStatusClick,
 }: ApplicationGridProps) {
   if (applications.length === 0) {
     return (
@@ -24,7 +24,7 @@ export function ApplicationGrid({
         <ApplicationCard
           key={application.id}
           application={application}
-          onClick={onApplicationClick}
+          onClick={onStatusClick}
         />
       ))}
     </div>

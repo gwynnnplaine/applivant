@@ -1,14 +1,13 @@
 import { JobApplication } from "@/entities/application";
+import { FileFormat } from "../types";
 
 const CSV_HEADERS = ["Company", "Job Title", "Status", "Date Added", "Job URL"];
 
-type ExportFormat = "csv" | "json";
-
 export function useExport(
   applications: JobApplication[],
-  format: ExportFormat = "csv",
+  defaultFormat: FileFormat = "csv",
 ) {
-  const handleExport = () => {
+  const handleExport = (format = defaultFormat) => {
     const { blob, extension } = getBlobWithExtension(applications, format);
     const url = URL.createObjectURL(blob);
     const linkTag = document.createElement("a");
@@ -23,7 +22,7 @@ export function useExport(
 
 function getBlobWithExtension(
   applications: JobApplication[],
-  format: ExportFormat,
+  format: FileFormat,
 ) {
   if (format === "json") {
     return createJSONBlob(applications);
@@ -48,10 +47,10 @@ function createCSVBlob(applications: JobApplication[]) {
       app.jobTitle,
       app.status,
       app.dateAdded,
-      app.jobUrl,
+      app.jobUrl ?? "",
     ]),
   ]
-    .map((row) => row.map((cell) => `"${cell}"`).join(","))
+    .map((row) => row.map((cell) => `"${cell ?? ""}"`).join(","))
     .join("\n");
 
   const blob = new Blob([csv], { type: "text/csv" });

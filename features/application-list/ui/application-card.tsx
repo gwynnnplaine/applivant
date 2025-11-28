@@ -1,7 +1,9 @@
 import { ApplicationStatusBadge } from "@/components/ui/application-status-badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { APPLICATION_STATUS, JobApplication } from "@/entities/application";
+import { ROUTES } from "@/lib/routes";
 import { cn } from "@/lib/utils";
+import { useRouter } from "next/navigation";
 
 interface ApplicationCardProps {
   application: JobApplication;
@@ -12,6 +14,12 @@ export function ApplicationCard({
   application,
   onClick,
 }: ApplicationCardProps) {
+  const router = useRouter();
+
+  function handleCardClick() {
+    router.push(ROUTES.VIEW_APPLICATION(application.id));
+  }
+
   function handleStatusClick(status: APPLICATION_STATUS) {
     onClick?.({
       ...application,
@@ -25,6 +33,7 @@ export function ApplicationCard({
         "w-full rounded-lg border border-border bg-card p-0 text-left shadow-sm transition-colors hover:bg-muted/50 focus:outline-none focus:ring-2 focus:ring-primary",
         onClick && "cursor-pointer hover:bg-muted",
       )}
+      onClick={handleCardClick}
     >
       <CardHeader className="pb-2">
         <div className="flex items-start justify-between gap-2">

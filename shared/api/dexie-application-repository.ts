@@ -1,6 +1,10 @@
 import { db } from "@/db";
 import { JobApplication } from "@/entities/application";
-import { IApplicationRepository } from "./application-repository";
+import { Dexie } from "dexie";
+import {
+  BulkCreateResult,
+  IApplicationRepository,
+} from "./application-repository";
 
 export class DexieApplicationRepository implements IApplicationRepository {
   async findAll(): Promise<JobApplication[]> {
@@ -13,6 +17,33 @@ export class DexieApplicationRepository implements IApplicationRepository {
 
   async create(application: JobApplication): Promise<string> {
     return db.applications.add(application);
+  }
+
+  async createMany(applications: JobApplication[]): Promise<BulkCreateResult> {
+    const total = applications.length;
+
+    try {
+      const inserted = await db.applications.bulkAdd(applications, {
+        allKeys: true,
+      });
+      return { inserted, duplicates: 0, errors: [] };
+    } catch (error) {
+      if (error instanceof Dexie.BulkError) {
+        const duplicates = error.failures.filter(
+          (e) => e.name === "ConstraintError",
+        ).length;
+        const otherErrors = error.failures
+          .filter((e) => e.name !== "ConstraintError")
+          .map((e) => e.message);
+
+        const inserted = Array(total - error.failures.length).fill(
+          "",
+        ) as string[];
+
+        return { inserted, duplicates, errors: otherErrors };
+      }
+      throw error;
+    }
   }
 
   async update(

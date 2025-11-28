@@ -21,6 +21,12 @@ export function ApplicationStatusBadge({
 }: StatusBadgeProps) {
   const config = STATUS_CONFIG[status];
 
+  function handleClick(event: React.MouseEvent, newStatus: APPLICATION_STATUS) {
+    event.stopPropagation();
+
+    onStatusChange?.(newStatus);
+  }
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -44,7 +50,7 @@ export function ApplicationStatusBadge({
           return (
             <DropdownMenuItem
               key={statusValue}
-              onClick={() => onStatusChange?.(statusValue)}
+              onClick={(event) => handleClick(event, statusValue)}
               title={itemConfig.description}
             >
               {itemConfig.label}

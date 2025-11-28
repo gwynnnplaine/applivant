@@ -8,7 +8,7 @@ export default function Home() {
   const service = useApplicationService();
 
   return (
-    <div className="flex h-screen flex-col rounded-lg border bg-card px-2 py-4 text-center">
+    <div className="flex flex-1 flex-col rounded-lg border bg-card px-2 py-4 text-center">
       <ErrorBoundary fallback={<FallbackComponent />}>
         <ApplicationList service={service} />
       </ErrorBoundary>

@@ -24,17 +24,32 @@ export const JOB_TYPE = {
 export type JOB_TYPE = (typeof JOB_TYPE)[keyof typeof JOB_TYPE];
 
 export const JobApplicationSchema = z.object({
-  id: z.uuid(),
-  company: z.string().min(2).max(100),
-  jobTitle: z.string().min(2).max(100),
+  id: z.uuid({ message: "Invalid application ID" }),
+  company: z
+    .string({ error: "Company name is required" })
+    .min(2, "Company name must be at least 2 characters")
+    .max(100, "Company name must be less than 100 characters"),
+  jobTitle: z
+    .string({ error: "Job title is required" })
+    .min(2, "Job title must be at least 2 characters")
+    .max(100, "Job title must be less than 100 characters"),
   status: z.enum(APPLICATION_STATUS),
   jobType: z.enum(JOB_TYPE),
-  salary: z.string().max(50).optional(),
-  location: z.string().max(100).optional(),
-  jobUrl: z.url().optional(),
-  notes: z.string().max(5000).optional(),
-  dateAdded: z.date(),
-  dateModified: z.date(),
+  salary: z
+    .number()
+    .max(50, "Salary must be less than 50 characters")
+    .optional(),
+  location: z
+    .string()
+    .max(100, "Location must be less than 100 characters")
+    .optional(),
+  jobUrl: z.url("Please enter a valid URL").optional().or(z.literal("")),
+  notes: z
+    .string()
+    .max(5000, "Notes must be less than 5000 characters")
+    .optional(),
+  dateAdded: z.date({ error: "Date added is required" }),
+  dateModified: z.date({ error: "Date modified is required" }),
 });
 
 export type JobApplication = z.infer<typeof JobApplicationSchema>;

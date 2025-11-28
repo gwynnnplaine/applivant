@@ -1,6 +1,12 @@
+const isDevelopment = process.env.NODE_ENV === "development";
+
+const scriptsSrc = isDevelopment
+  ? ["'self'", "'unsafe-eval'", "'unsafe-inline'"]
+  : ["'self'"];
+
 const cspDirectives: Record<string, string[]> = {
   "default-src": ["'self'"],
-  "script-src": ["'self'"],
+  "script-src": scriptsSrc,
   "style-src": ["'self'", "'unsafe-inline'"],
   "img-src": ["'self'", "data:", "blob:"],
   "font-src": ["'self'"],

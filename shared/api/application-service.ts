@@ -3,7 +3,10 @@ import {
   JobApplicationInput,
   JobApplicationInputSchema,
 } from "@/entities/application";
-import { IApplicationRepository } from "./application-repository";
+import {
+  BulkCreateResult,
+  IApplicationRepository,
+} from "./application-repository";
 import {
   ApplicationDatabaseError,
   ApplicationNotFoundError,
@@ -43,14 +46,7 @@ export class ApplicationService {
 
   async create(input: JobApplicationInput): Promise<JobApplication> {
     const validatedInput = this.#validate(input);
-    const now = new Date();
-
-    const application: JobApplication = {
-      ...validatedInput,
-      id: crypto.randomUUID(),
-      dateAdded: now,
-      dateModified: now,
-    };
+    const application = this.#buildApplication(validatedInput);
 
     try {
       await this.#repository.create(application);
@@ -103,6 +99,14 @@ export class ApplicationService {
     }
   }
 
+  async createMany(inputs: JobApplicationInput[]): Promise<BulkCreateResult> {
+    const applications = inputs.map((input) =>
+      this.#buildApplication(this.#validate(input)),
+    );
+
+    return this.#repository.createMany(applications);
+  }
+
   #validate(input: JobApplicationInput): JobApplicationInput {
     const result = JobApplicationInputSchema.safeParse(input);
 
@@ -115,5 +119,15 @@ export class ApplicationService {
     }
 
     return result.data;
+  }
+
+  #buildApplication(input: JobApplicationInput): JobApplication {
+    const now = new Date();
+    return {
+      ...input,
+      id: crypto.randomUUID(),
+      dateAdded: now,
+      dateModified: now,
+    };
   }
 }

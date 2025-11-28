@@ -2,7 +2,7 @@ import {
   generateMockApplication,
   readBlobAsText,
 } from "@/__tests__/helpers/mocks";
-import { useExport } from "@/shared/hooks/use-export";
+import { useExport } from "@/features/import-export/hooks/use-export";
 import { act, renderHook } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 

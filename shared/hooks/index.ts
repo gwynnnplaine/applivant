@@ -1,7 +1,7 @@
 export { useApplication } from "./use-application";
 export { useApplications } from "./use-applications";
 export { useConfirmDialog } from "./use-confirm-dialog";
-export { useExport } from "./use-export";
+export { useLocalStorage } from "./use-local-storage";
 export {
   useIsDesktop,
   useIsMdOrLarger,

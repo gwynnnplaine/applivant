@@ -7,7 +7,7 @@ const db = new Dexie(DATABASE_NAME) as Dexie & {
 };
 
 db.version(DATABASE_VERSION).stores({
-  applications: "id",
+  applications: "id, company, jobTitle, &[company+jobTitle]",
 });
 
 export { db };

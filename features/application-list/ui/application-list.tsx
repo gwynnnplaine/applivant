@@ -60,7 +60,7 @@ export function ApplicationList({ service }: ApplicationListProps) {
       ) : (
         <ApplicationGrid
           applications={filteredApplications}
-          onApplicationClick={handleStatusChange}
+          onStatusClick={handleStatusChange}
         />
       )}
     </div>
