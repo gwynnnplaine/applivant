@@ -259,11 +259,9 @@ describe("ApplicationForm", () => {
   test("renders salary input with currency selector", () => {
     render(<ApplicationForm onSubmit={vi.fn()} />);
 
-    // Salary input is present
     const salaryInput = screen.getByPlaceholderText("120,000");
     expect(salaryInput).toBeDefined();
 
-    // There are 3 comboboxes: Status, Job Type, and Currency selector
     const comboboxes = screen.getAllByRole("combobox");
     expect(comboboxes.length).toBe(3);
   });

@@ -1,26 +1,27 @@
 import { CSVFileParser } from "@/features/import-export/file-parser/csv-parser";
-import { describe, expect, test, vi } from "vitest";
-
-vi.stubGlobal(
-  "File",
-  class {
-    private content: string;
-    name: string;
-    type: string;
-
-    constructor(chunks: string[], name: string, options: { type: string }) {
-      this.content = chunks.join("");
-      this.name = name;
-      this.type = options.type;
-    }
-
-    async text() {
-      return this.content;
-    }
-  },
-);
+import { beforeEach, describe, expect, test, vi } from "vitest";
 
 describe("CSV Parser", () => {
+  beforeEach(() => {
+    vi.stubGlobal(
+      "File",
+      class {
+        private content: string;
+        name: string;
+        type: string;
+
+        constructor(chunks: string[], name: string, options: { type: string }) {
+          this.content = chunks.join("");
+          this.name = name;
+          this.type = options.type;
+        }
+
+        async text() {
+          return this.content;
+        }
+      },
+    );
+  });
   test("should not parse if file type is not text/csv", () => {
     const parser = new CSVFileParser();
 

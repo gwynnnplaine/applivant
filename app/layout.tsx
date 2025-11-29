@@ -1,6 +1,7 @@
 import { NavigationBar } from "@/features/navigation";
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { Toaster } from "react-hot-toast";
 import { ServiceProvider } from "./providers/service-provider";
 import { ThemeProvider } from "./providers/theme-provider";
@@ -62,9 +63,11 @@ export default function RootLayout({ children }: Readonly<RootLayoutProps>) {
           disableTransitionOnChange
         >
           <ServiceProvider>
-            <NavigationBar />
-            {children}
-            <Toaster />
+            <NuqsAdapter>
+              <NavigationBar />
+              {children}
+              <Toaster />
+            </NuqsAdapter>
           </ServiceProvider>
         </ThemeProvider>
       </body>

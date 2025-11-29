@@ -1,26 +1,6 @@
 import { FileParser } from "@/features/import-export/file-parser/file-parser";
-import { describe, expect, test, vi } from "vitest";
+import { beforeEach, describe, expect, test, vi } from "vitest";
 import z from "zod";
-
-// have mocked File.prototype.text to return the file object itself
-vi.stubGlobal(
-  "File",
-  class {
-    private content: string;
-    name: string;
-    type: string;
-
-    constructor(chunks: string[], name: string, options: { type: string }) {
-      this.content = chunks.join("");
-      this.name = name;
-      this.type = options.type;
-    }
-
-    async text() {
-      return this.content;
-    }
-  },
-);
 
 const testSchema = z.object({
   name: z.string(),
@@ -28,6 +8,27 @@ const testSchema = z.object({
 });
 
 describe("File Parser", () => {
+  beforeEach(() => {
+    vi.stubGlobal(
+      "File",
+      class {
+        private content: string;
+        name: string;
+        type: string;
+
+        constructor(chunks: string[], name: string, options: { type: string }) {
+          this.content = chunks.join("");
+          this.name = name;
+          this.type = options.type;
+        }
+
+        async text() {
+          return this.content;
+        }
+      },
+    );
+  });
+
   test("should apply CSV strategy for CSV files", async () => {
     const parser = new FileParser(testSchema);
 
