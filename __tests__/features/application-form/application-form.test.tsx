@@ -126,17 +126,19 @@ describe("ApplicationForm", () => {
     await user.type(screen.getByLabelText(/Company/), "Acme Corp");
     await user.type(screen.getByLabelText(/Job Title/), "Software Engineer");
 
-    await user.click(
-      screen.getByRole("button", { name: "Submit Application" }),
-    );
-
-    await waitFor(() => {
-      expect(onSubmit).toHaveBeenCalled();
+    const submitButton = screen.getByRole("button", {
+      name: "Submit Application",
     });
 
-    const callArgs = onSubmit.mock.calls[0][0];
-    expect(callArgs.status).toBe("Applied");
-    expect(callArgs.jobType).toBe("Full-time");
+    await user.click(submitButton);
+
+    expect(onSubmit).toHaveBeenCalledWith(
+      expect.objectContaining({
+        status: "Applied",
+        jobType: "Full-time",
+      }),
+      expect.anything(),
+    );
   });
 
   test("shows validation error for empty company", async () => {

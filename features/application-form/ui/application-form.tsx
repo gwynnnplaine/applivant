@@ -24,7 +24,7 @@ interface ApplicationFormProps {
 const DEFAULT_VALUES: Partial<JobApplicationInput> = {
   status: APPLICATION_STATUS.APPLIED,
   jobType: JOB_TYPE.FULL_TIME,
-  salary: 0,
+  salary: "",
   company: "",
   jobTitle: "",
   location: "",

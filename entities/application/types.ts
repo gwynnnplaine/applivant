@@ -35,10 +35,7 @@ export const JobApplicationSchema = z.object({
     .max(100, "Job title must be less than 100 characters"),
   status: z.enum(APPLICATION_STATUS),
   jobType: z.enum(JOB_TYPE),
-  salary: z
-    .number()
-    .max(50, "Salary must be less than 50 characters")
-    .optional(),
+  salary: z.string().optional(),
   location: z
     .string()
     .max(100, "Location must be less than 100 characters")
