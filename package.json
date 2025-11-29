@@ -9,6 +9,8 @@
     "lint": "eslint",
     "test": "vitest",
     "test:coverage": "vitest run --coverage",
+    "test:ui": "vitest --ui",
+    "test:e2e": "playwright test --ui",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "prepare": "husky"
@@ -54,6 +56,7 @@
     "zod": "link:@hookform/resolvers/zod"
   },
   "devDependencies": {
+    "@playwright/test": "^1.57.0",
     "@tailwindcss/postcss": "^4",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.9.1",
@@ -64,6 +67,7 @@
     "@types/react-dom": "^19",
     "@vitejs/plugin-react": "^5.1.1",
     "@vitest/coverage-v8": "4.0.12",
+    "@vitest/ui": "^4.0.14",
     "autoprefixer": "^10.4.22",
     "babel-plugin-react-compiler": "1.0.0",
     "eslint": "^9",
@@ -72,6 +76,7 @@
     "husky": "^9.1.7",
     "jsdom": "^27.2.0",
     "lint-staged": "^16.2.7",
+    "playwright-indexeddb": "^1.0.0",
     "postcss": "^8.5.6",
     "prettier": "^3.6.2",
     "prettier-plugin-tailwindcss": "^0.7.1",
@@ -79,7 +84,7 @@
     "tailwindcss-animate": "^1.0.7",
     "typescript": "^5",
     "vite-tsconfig-paths": "^5.1.4",
-    "vitest": "^4.0.12",
+    "vitest": "^4.0.14",
     "zocker": "^3.0.0"
   },
   "packageManager": "pnpm@10.24.0+sha512.01ff8ae71b4419903b65c60fb2dc9d34cf8bb6e06d03bde112ef38f7a34d6904c424ba66bea5cdcf12890230bf39f9580473140ed9c946fef328b6e5238a345a"

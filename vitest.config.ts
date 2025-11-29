@@ -5,6 +5,7 @@ import { defineConfig } from 'vitest/config';
 export default defineConfig({
   plugins: [tsconfigPaths(), react()],
    test: {
+     exclude: ['**\/node_modules/**', '**\/.git/**', '**/__tests__/end-to-end/**'],
      clearMocks: true,
      restoreMocks: true,
      unstubGlobals: true,
