@@ -13,6 +13,13 @@ afterEach(() => {
   cleanup();
 });
 
+vi.mock("next/navigation", () => ({
+  ...vi.importActual("next/navigation"),
+  useRouter: () => ({
+    push: vi.fn(),
+  }),
+}));
+
 vi.mock("@/components/ui/application-status-badge", () => ({
   ApplicationStatusBadge: ({
     status,
