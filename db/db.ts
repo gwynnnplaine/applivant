@@ -1,13 +1,17 @@
 import type { JobApplication } from "@/entities/application";
 import Dexie, { EntityTable } from "dexie";
-import { DATABASE_NAME, DATABASE_VERSION } from "./consts";
+import {
+  APPLICATIONS_STORE_NAME,
+  DATABASE_NAME,
+  DATABASE_VERSION,
+} from "./consts";
 
 const db = new Dexie(DATABASE_NAME) as Dexie & {
-  applications: EntityTable<JobApplication, "id">;
+  [APPLICATIONS_STORE_NAME]: EntityTable<JobApplication, "id">;
 };
 
 db.version(DATABASE_VERSION).stores({
-  applications: "id, company, jobTitle, &[company+jobTitle]",
+  [APPLICATIONS_STORE_NAME]: "id, company, jobTitle, &[company+jobTitle]",
 });
 
 export { db };
