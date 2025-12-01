@@ -1,28 +1,30 @@
+import Papa from "papaparse";
 import { FileParserStrategy } from "./parser-strategy";
 
 export class CSVFileParser<T> implements FileParserStrategy<Partial<T>> {
   async parse(file: File): Promise<Partial<T>[]> {
-    const text = await file.text();
-
-    const splittedLines = text.split("\n");
-    const headers = splittedLines[0]?.split(",") || [];
-    const dataLines = splittedLines.slice(1);
-
-    const formattedData = dataLines.map((line) => {
-      const values = line.split(",");
-      const entry: Partial<T> = {};
-
-      headers.forEach((header, index) => {
-        const key = this.#toCamelCase(header);
-        (entry as Record<string, string>)[key] = this.#cleanValueFromQuotes(
-          values[index] || "",
-        ).trim();
+    return new Promise((resolve, reject) => {
+      Papa.parse(file, {
+        header: true,
+        skipEmptyLines: true,
+        complete: (results) => {
+          // results.data is already an array of objects!
+          // You might need a small mapper to camelCase keys if CSV headers are different
+          const formatted = results.data.map((row) => {
+            const formattedRow: Record<string, unknown> = {};
+            for (const [key, value] of Object.entries(row)) {
+              const camelCasedKey = this.#toCamelCase(key);
+              formattedRow[camelCasedKey] = this.#cleanValueFromQuotes(
+                value as string,
+              );
+            }
+            return formattedRow as Partial<T>;
+          });
+          resolve(formatted);
+        },
+        error: (err) => reject(err),
       });
-
-      return entry;
     });
-
-    return formattedData;
   }
 
   supports(file: File): boolean {
