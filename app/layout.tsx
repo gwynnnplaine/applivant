@@ -1,7 +1,9 @@
 import { NavigationBar } from "@/features/navigation";
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
+import Script from "next/script";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
+import { Suspense } from "react";
 import { Toaster } from "react-hot-toast";
 import { ServiceProvider } from "./providers/service-provider";
 import { ThemeProvider } from "./providers/theme-provider";
@@ -18,7 +20,6 @@ export const metadata: Metadata = {
   title: "Applivant - Job Application Tracker",
   description:
     "Privacy-first, local-only job application tracking tool for technical job seekers",
-  manifest: "/site.webmanifest",
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "any" },
@@ -61,12 +62,15 @@ export default function RootLayout({ children }: Readonly<RootLayoutProps>) {
         >
           <ServiceProvider>
             <NuqsAdapter>
-              <NavigationBar />
-              {children}
-              <Toaster />
+              <Suspense>
+                <NavigationBar />
+                {children}
+                <Toaster />
+              </Suspense>
             </NuqsAdapter>
           </ServiceProvider>
         </ThemeProvider>
+        <Script src="/register-sw.js" strategy="afterInteractive" />
       </body>
     </html>
   );
