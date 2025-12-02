@@ -18,22 +18,19 @@ export const metadata: Metadata = {
   title: "Applivant - Job Application Tracker",
   description:
     "Privacy-first, local-only job application tracking tool for technical job seekers",
+  manifest: "/site.webmanifest",
   icons: {
     icon: [
-      {
-        url: "/icon-light-32x32.png",
-        media: "(prefers-color-scheme: light)",
-      },
-      {
-        url: "/icon-dark-32x32.png",
-        media: "(prefers-color-scheme: dark)",
-      },
-      {
-        url: "/icon.svg",
-        type: "image/svg+xml",
-      },
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
     ],
-    apple: "/apple-icon.png",
+    apple: "/apple-touch-icon.png",
+  },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "Applivant",
   },
 };
 
