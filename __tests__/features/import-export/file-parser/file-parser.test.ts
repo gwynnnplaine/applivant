@@ -83,9 +83,9 @@ describe("File Parser", () => {
     const file = new File(["name,age\nJohn,thirty"], "test.csv", {
       type: "text/csv",
     });
-    const result = await parser.parse(file).catch((e) => e.message);
+    const result = await parser.parse(file).catch((e) => e);
 
-    expect(result).toContain("Data validation failed");
+    expect(result).toBeInstanceOf(z.ZodError);
   });
   test("should coerce boolean and number values from strings", async () => {
     const schema = z.object({

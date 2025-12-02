@@ -19,9 +19,10 @@ export async function seedBrowserDB({ data, dbName, storeName }: SeedParams) {
   const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
   // We need to wait until the Dexie/App has created the DB schema
+  const MAX_RETRY_ATTEMPTS = 50;
   let attempts = 0;
   while (true) {
-    if (attempts > 50)
+    if (attempts > MAX_RETRY_ATTEMPTS)
       throw new Error(`DB Timeout: Store '${storeName}' not found.`);
 
     try {

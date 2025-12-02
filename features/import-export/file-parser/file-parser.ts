@@ -35,7 +35,7 @@ export class FileParser<T extends ZodObjectSchema> {
       const coercedItem = this.#coerceToSchema(item);
       const result = this.#schema.safeParse(coercedItem);
       if (!result.success) {
-        throw new Error("Data validation failed: " + result.error.message);
+        throw result.error;
       }
       return result.data;
     });
