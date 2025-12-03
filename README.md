@@ -35,17 +35,6 @@ This is a **Static Web Application (PWA)** hosted on the Edge, with logic strict
 - **Styling:** Tailwind CSS
 - **Deployment:** Vercel (via GitHub Actions)
 
-## Security Posture (OWASP ASVS L2)
-
-This project adheres to security-by-design principles.
-
-- **Content Security Policy (CSP):** Strict enforcement. `script-src 'self'`. No external CDNs allowed for logic.
-- **Data Persistence:** Relying on OS-level full-disk encryption (FileVault/BitLocker) via the browser sandbox.
-- **Input Sanitization:** DOMPurify for all user-generated Markdown.
-- **Dependency Management:** Pin exact versions; automated auditing via GitHub Dependabot.
-
-For more on OWASP ASVS, see [their guidelines](https://owasp.org/www-project-application-security-verification-standard/).
-
 ## Getting Started
 
 - **Live Demo:** https://applivant.com/
