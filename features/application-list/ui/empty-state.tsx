@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export function EmptyState() {
   return (
-    <div className="flex h-full flex-col items-center justify-center">
+    <div className="flex h-full flex-1 flex-col items-center justify-center">
       <h2 className="text-5xl font-semibold">Your data stays local</h2>
       <p className="mt-2 text-sm text-muted-foreground">
         Everything you add is stored in your browser. No servers, no tracking.
