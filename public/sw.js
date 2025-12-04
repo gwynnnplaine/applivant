@@ -1,4 +1,4 @@
-const CACHE_NAME = "applivant-cache-worker";
+const CACHE_NAME = "applivant-cache-worker-v2";
 
 const CSP_HEADER =
   "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests";
@@ -127,15 +127,16 @@ async function networkFirst(request) {
 }
 
 async function networkFirstWithAppShellFallback(request) {
+  const cacheKey = new Request(request.url + request.pathname);
   try {
     const networkResponse = await fetch(request);
     if (networkResponse.ok) {
       const cache = await caches.open(CACHE_NAME);
-      cache.put(request, networkResponse.clone());
+      cache.put(cacheKey, networkResponse.clone());
     }
     return networkResponse;
   } catch (error) {
-    const cachedResponse = await caches.match(request);
+    const cachedResponse = await caches.match(cacheKey);
     if (cachedResponse) {
       return addSecurityHeaders(cachedResponse);
     }
